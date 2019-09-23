@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Search Application</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+	<h1 style="text-align:center;"><span style="color: red;">Search Game</span>&nbsp<span>BY</span>&nbsp<span style="color: green;">Name</span></h1>
+
+<div class="container">
+  <div class="row" style="margin-top: 3%;">
+    <div class="col-sm">
+    </div>
+    <div class="col-sm">
+       <div class="form-group">
+    		<input type="text" class="form-control" id="search_input"  placeholder="Please Enter Game Name..">
+  		</div>
+    </div>
+    <div class="col-sm">
+    </div>
+  </div>
+  <div class="row" id="table-row" style="display:none;">
+  	<table class="table table-hover table-dark">
+  		<thead>
+    		<tr>
+      			<th scope="col">Title</th>
+      			<th scope="col">Platform</th>
+      			<th scope="col">Score</th>
+      			<th scope="col">Genre</th>
+      			<th scope="col">Editors Choice</th>
+    		</tr>
+  		</thead>
+  	<tbody id="table-body">
+    	
+  </tbody>
+</table>
+  </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+<script>
+$("#search_input").keyup(function(){
+  var input_value = $('#search_input').val();
+  if (input_value != ""){
+	$.ajax({
+        url: 'requested_game/',
+        data: {
+          'input_value': input_value
+        },
+        dataType: 'json',
+        success: function (data) {
+        	var response_data = JSON.parse(data).output_data;
+          if (data) {
+          	$('#table-body').html("")
+          	for (index = 0; index < response_data.length; index++) { 
+    				console.log(response_data[index]); 
+    				$('#table-body').append("<tr><td>"+response_data[index][0]+"</td><td>"+response_data[index][1]+"</td><td>"+
+    					response_data[index][2]+"</td><td>"+response_data[index][3]+"</td><td>"+response_data[index][4]+"</td></tr>");
+				} 
+          	
+          	$('#table-row').css('display','block');
+          }
+          else{
+
+          }
+        }
+      });
+  }
+  else{
+  	$('#table-row').css('display','none');
+  }
+});
+</script>
+</body>
+</html>
